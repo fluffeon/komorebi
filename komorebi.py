@@ -37,7 +37,7 @@ import komorebi.utilities
 from komorebi.screen import Screen
 
 
-def check_desktop_compatible():
+def check_desktop_wayland():
     return not(os.environ.get('XDG_SESSION_TYPE') == 'wayland' or os.environ.get('WAYLAND_DISPLAY'))
 
 
@@ -87,10 +87,9 @@ def main():
     logging.basicConfig(format=log_format, level=log_level, datefmt='%H:%M:%S')
 
     # Ensure we are not on Wayland
-    if not check_desktop_compatible():
-        logging.error('Wayland detected. Not supported (yet) :(')
+    if not check_desktop_wayland():
+        logging.info('Wayland detected. Wayland support is Experimental!')
         logging.info('Contribute to Komorebi and add the support! <3')
-        return
 
     # Initialize backends
     GtkClutter.init(sys.argv)
