@@ -16,11 +16,9 @@ i18n.gettext(meson.project_name(),
 )
 
 py_mod = import('python')
-py_installation = py_mod.find_installation('python3')
-if not py_installation.found()
+py = py_mod.find_installation('python3')
+if not py.found()
       error('Couldn\'t find valid Python3 binary')
-else
-      message('Python3 binary found')
 endif
 
 # Set some variables
@@ -28,7 +26,7 @@ prefix = get_option('prefix')
 bindir = get_option('bindir')
 datadir = get_option('datadir')
 pkgdatadir = join_paths(prefix, datadir, meson.project_name())
-py_dir = join_paths(prefix, py_installation.get_install_dir())
+py_dir = join_paths(prefix, py.get_install_dir())
 
 # Compile resources (images, etc,) so that they're built into the app.
 # TODO: Generate separate resource bundles for Komorebi & Wallpaper Creator;
@@ -56,42 +54,8 @@ if not webkit_dep.found()
   webkit_dep = dependency('webkit2gtk-4.0')
 endif
 
+komorebi = fs.copyfile('komorebi.py', 'komorebi-desktop', install: true, install_dir: bindir)
+creator = fs.copyfile('komorebi-wallpaper-creator.py', 'komorebi-wallpaper-creator', install: true, install_dir: bindir)
+
 subdir('data')
-
-# Setup install dirs
-install_subdir(
-    'komorebi',
-     exclude_files: [
-        '__init__.in'
-    ],
-    exclude_directories: [
-        '__pycache__',
-        'bubblemenu/__pycache__',
-        'overlays/__pycache__',
-        'wallpaper_creator/__pycache__',
-        'wallpapers/__pycache__'
-    ],
-    install_dir: py_dir
-)
-
-fs.copyfile('komorebi.py', 'komorebi', install: true, install_dir: bindir)
-fs.copyfile('komorebi-wallpaper-creator.py', 'komorebi-wallpaper-creator', install: true, install_dir: bindir)
-
-# Configure __init__.py
-conf = configuration_data()
-conf.set_quoted('PACKAGE_NAME', meson.project_name())
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
-conf.set_quoted('PKGDATADIR', pkgdatadir)
-conf.set_quoted('DATADIR', join_paths(prefix, datadir))
-
-configure_file(
-      input: 'komorebi/__init__.in',
-      output: '__init__.py',
-      configuration: conf,
-      install: true,
-      install_dir: join_paths(py_dir, 'komorebi')
-)
-
-# Postinst script needs work. Let's not run it blindly.
-# Frankly, I doubt that there's many (any?) users that have yet to update wallpapers to the new format, so maybe do away with it?
-#meson.add_install_script('data/Other/postinst')
+subdir('komorebi')
