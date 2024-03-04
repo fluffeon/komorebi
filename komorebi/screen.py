@@ -83,9 +83,11 @@ class Screen(Gtk.Window):
 
         self.change_wallpaper_item = BubbleMenuItem("Change Wallpaper", self.menu_change_wallpaper)
         self.settings_item = BubbleMenuItem("Desktop Preferences", self.menu_open_settings)
+        self.exit_item = BubbleMenuItem(f"Exit {komorebi.__package_name__}", self.menu_exit)
 
         self.bubble_menu.meta_options.add_child(self.change_wallpaper_item)
         self.bubble_menu.meta_options.add_child(self.settings_item)
+        self.bubble_menu.meta_options.add_child(self.exit_item)
 
         self.stage.add_child(self.wallpaper_root)
         self.stage.add_child(self.overlay_root)
@@ -130,6 +132,11 @@ class Screen(Gtk.Window):
     def menu_change_wallpaper(self, item, e):
         logging.debug("Change Wallpaper clicked")
         self.emit('settings_requested', True)
+        return False
+
+    def menu_exit(self, item, e):
+        logging.debug("Exit clicked")
+        Clutter.main_quit()
         return False
 
     def menu_open_settings(self, item, e):
