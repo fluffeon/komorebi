@@ -16,8 +16,17 @@ gi.require_versions({
     'Gdk': '3.0',
     'GdkPixbuf': '2.0',
     'Gst': '1.0',
-    'WebKit2': '4.0',
 })
+
+try:
+    gi.require_version('WebKit2', '4.0')
+except ValueError:
+    # If 4.0 is not available, try 4.1
+    try:
+        gi.require_version('WebKit2', '4.1')
+    except ValueError:
+        print("Neither WebKit2 version 4.0 nor 4.1 is available.")
+        sys.exit(1)
 
 from gi.repository import Gio, Gtk, GtkClutter, Gdk, Gst, Clutter
 

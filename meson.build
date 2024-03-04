@@ -1,16 +1,18 @@
 project('komorebi',
-    version: '2.2.1',
-    meson_version: '>=0.50',
+    version: '3.0.0',
+    meson_version: '>=0.64',
     default_options: ['prefix=/usr/local']
 )
 
+fs = import('fs')
+
 # Internationalisation / Localisation. This is currently only used to configure the .desktop files;
 i18n = import('i18n')
-po_dir = meson.source_root() / 'po'
+po_dir = meson.project_source_root() / 'po'
 gettext_package = meson.project_name()
 add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
 i18n.gettext(meson.project_name(),
-    args: '--directory=' + meson.source_root()
+    args: '--directory=' + meson.project_source_root()
 )
 
 py_mod = import('python')
@@ -44,11 +46,15 @@ dependencies = [
     dependency('gobject-2.0'),
     dependency('gtk+-3.0', version: '>=3.14'),
     dependency('gee-0.8'),
-    dependency('webkit2gtk-4.0'),
     dependency('clutter-gtk-1.0'),
     dependency('clutter-1.0'),
     dependency('clutter-gst-3.0'),
 ]
+
+webkit_dep = dependency('webkit2gtk-4.1', required : false)
+if not webkit_dep.found()
+  webkit_dep = dependency('webkit2gtk-4.0')
+endif
 
 subdir('data')
 
@@ -68,19 +74,8 @@ install_subdir(
     install_dir: py_dir
 )
 
-configure_file(
-    input: 'komorebi.py',
-    output: 'komorebi',
-    copy: true,
-    install_dir: bindir
-)
-
-configure_file(
-    input: 'komorebi-wallpaper-creator.py',
-    output: 'komorebi-wallpaper-creator',
-    copy: true,
-    install_dir: bindir
-)
+fs.copyfile('komorebi.py', 'komorebi', install: true, install_dir: bindir)
+fs.copyfile('komorebi-wallpaper-creator.py', 'komorebi-wallpaper-creator', install: true, install_dir: bindir)
 
 # Configure __init__.py
 conf = configuration_data()
