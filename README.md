@@ -2,8 +2,6 @@
 <h2 align="center">Komorebi - Animated Wallpapers for Linux</h2>
 <p align="center">(n) sunlight filtering through trees.</p>
 
-
-
 <p align="center">
 	<a href="http://www.kernel.org"><img alt="Platform (GNU/Linux)" src="https://img.shields.io/badge/platform-GNU/Linux-blue.svg"></a>
 	<a href="https://travis-ci.org/Komorebi-Fork/komorebi"><img alt="Build Status" src="https://travis-ci.org/Komorebi-Fork/komorebi.svg?branch=master"></a>
@@ -20,7 +18,7 @@ alt="Komorebi Demo" width="240" height="180" border="10" /><br>Watch demo</a>
 Komorebi is an animated wallpaper manager for all Linux platforms.
 It provides you with fully customisable image, video, and web page wallpapers that you can tweak at any time!
 
-This project is a fork of the original [Komorebi](https://github.com/cheesecakeufo/komorebi) by [@cheesecakeufo](https://github.com/cheesecakeufo).
+This project is a Python rewrite and continuation of the original [Komorebi](https://github.com/cheesecakeufo/komorebi) by [@cheesecakeufo](https://github.com/cheesecakeufo).
 
 ![s1](https://raw.githubusercontent.com/Komorebi-Fork/komorebi/master/screenshots/collage.jpg)
 
@@ -28,25 +26,14 @@ This project is a fork of the original [Komorebi](https://github.com/cheesecakeu
 
 Komorebi has been tested on:
 
-- **Ubuntu** _18.04_, _20.04_
-- **Elementary OS** _5.1.4_
-- **Pop! OS** _20.04_
-- **Fedora** _32_
-- **Manjaro** _20.0.3_
-- **Deepin** _20_
-- **Arch Linux**
 - **Gentoo**
+
+Please test on your own distro and submit a pull request with your distro's instructions!
 
 ### Debian and derivatives (Ubuntu, Deepin, Elementary OS, Pop! OS, etc...)
 
-Download the latest `.deb` package from our [releases page](https://github.com/Komorebi-Fork/komorebi/releases/) and install it with:
-
-```bash
-
-sudo dpkg -i komorebi_2.2.0-1.deb
-```
-
-*(or by double-clicking on the downloaded file.)*
+> [!TIP]
+> Users interested in packaging Komorebi for Debian-based distros are encouraged to do so - Please reach out for access to our legacy (vala) packaging repo!
 
 If you'd like to compile Komorebi from source instead, you'll need to install the following dependencies:
 
@@ -57,8 +44,6 @@ sudo apt install meson valac libgtk-3-dev libgee-0.8-dev libclutter-gtk-1.0-dev 
 and jump to the [compiling section](#compiling).
 
 ### Fedora / OpenSUSE
-
-**Fedora uses Wayland by default, which Komorebi doesn't support yet. You will have to switch to Xorg for the meantime.**
 
 Grab the appropriate rpm from [here](https://build.opensuse.org/package/show/home%3ANNowakowski/Komorebi-Fork), and install it.
 
@@ -90,6 +75,16 @@ sudo pacman -S meson vala gtk3 clutter clutter-gtk clutter-gst libgee
 
 and jump to the [compiling section](#compiling).
 
+### Gentoo
+
+There is an ebuild available in Kangie's overlay. You can add the overlay and install Komorebi with the following commands:
+
+```bash
+eselect repository add kangie git https://github.com/Kangie/kangie-tools.git
+emerge --sync
+emerge -av x11-misc/komorebi
+```
+
 ## Compiling
 
 Run the following:
@@ -97,7 +92,8 @@ Run the following:
 ```bash
 git clone https://github.com/Komorebi-Fork/komorebi.git
 cd komorebi
-meson build && cd build && meson compile
+meson setup builddir --python.bytecompile=2
+cd builddir && meson compile
 ```
 
 To install the compiled package:
@@ -106,9 +102,16 @@ To install the compiled package:
 meson install
 ```
 
+> [!NOTE]
+> The default installation prefix is `/usr/local`. If you want to install it in a different location, you can specify it with `meson setup builddir --prefix=/your/prefix`.
+>
+> This is important, as /usr/local/bin is not in the default PATH for non-root users on most distros and, in particular, the `PYTHONPATH` may not include `/usr/local/lib/python3.x/site-packages`.
+
+Users are encouraged to install Komorebi from their distro's package manager if available (or request it to be packaged!)
+
 ## Using Komorebi
 
-Simply run `komorebi`, or open your application launcher and look for **Komorebi**.
+Simply run `komorebi-desktop`, or open your application launcher and look for **Komorebi**.
 
 Komorebi displays behind all other windows, so you may not notice anything if you have a fullscreen application running.
 
@@ -136,7 +139,7 @@ You can use either an image, a video, or a web page as a wallpaper and you have 
 If you manually installed Komorebi, run the following on the cloned repository folder:
 
 ```bash
-cd build
+cd builddir
 sudo ninja uninstall
 ```
 
@@ -152,19 +155,6 @@ You can also disable support for video wallpapers altogether in 'Desktop Prefere
 
 _note: you need to quit and re-open Komorebi after changing this option_
 
-### Komorebi is crashing and I'm using two or more screens!
-
-This is a [known bug](https://github.com/Komorebi-Fork/komorebi/issues/18). There's currently no solution for this, but if you have any ideas we'd love to hear from you!
-
-For now, you can force Komorebi to display on the main screen only by running it with `--single-screen`.
-
-### After uninstalling, my desktop isn't working right (blank or no icons)
-
-The latest version should already have a fix for this issue. If you've already uninstalled Komorebi and would like to fix the issue, simply run this (in the Terminal):
-`curl -s https://raw.githubusercontent.com/Komorebi-Fork/komorebi/master/data/Other/postrm | bash -s`
-
-If your issue has not already been reported, please report it [here](https://github.com/Komorebi-Fork/komorebi/issues/new).
-
 ### Thanks To:
 
-Pete Lewis ([@PJayB](https://github.com/PJayB)) for adding multi-monitor support
+Pete Lewis ([@PJayB](https://github.com/PJayB)) for adding multi-monitor support.
