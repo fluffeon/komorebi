@@ -6,11 +6,11 @@ conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 conf.set_quoted('PKGDATADIR', pkgdatadir)
 conf.set_quoted('DATADIR', join_paths(prefix, datadir))
 
-configure_file(
-      input: '__init__.in',
-      output: '__init__.py',
-      configuration: conf,
-      install: false,
+initpy = configure_file(
+    input: '__init__.in',
+    output: '__init__.py',
+    configuration: conf,
+    install: false,
 )
 
 py.install_sources(
@@ -19,7 +19,7 @@ py.install_sources(
         'screen.py',
         'settings.py',
         'utilities.py',
-        join_paths(meson.current_build_dir(), '__init__.py')
+        initpy,
     ],
     subdir: 'komorebi',
 )
@@ -40,7 +40,7 @@ py.install_sources(
         'overlays/clock.py',
         'overlays/desktop.py',
     ],
-        subdir: 'komorebi/overlays',
+    subdir: 'komorebi/overlays',
 )
 
 py.install_sources(

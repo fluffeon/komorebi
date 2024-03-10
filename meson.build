@@ -1,7 +1,7 @@
-project('komorebi',
+project(
+    'komorebi',
     version: '3.0.0',
     meson_version: '>=0.64',
-    default_options: ['prefix=/usr/local']
 )
 
 fs = import('fs')
@@ -11,15 +11,13 @@ i18n = import('i18n')
 po_dir = meson.project_source_root() / 'po'
 gettext_package = meson.project_name()
 add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
-i18n.gettext(meson.project_name(),
-    args: '--directory=' + meson.project_source_root()
+i18n.gettext(
+    meson.project_name(),
+    args: '--directory=' + meson.project_source_root(),
 )
 
 py_mod = import('python')
 py = py_mod.find_installation('python3')
-if not py.found()
-      error('Couldn\'t find valid Python3 binary')
-endif
 
 # Set some variables
 prefix = get_option('prefix')
@@ -33,10 +31,12 @@ py_dir = join_paths(prefix, py.get_install_dir())
 # There's enough overlap that I'm not going to do it right now, but it'd be more elegant.
 gnome = import('gnome')
 komorebiresources = gnome.compile_resources(
-    'komorebi', 'data/resources/komorebi.gresource.xml',
+    'komorebi',
+    'data/resources/komorebi.gresource.xml',
     source_dir: 'data/resources',
     gresource_bundle: true,
-    install: true, install_dir: pkgdatadir
+    install: true,
+    install_dir: pkgdatadir,
 )
 
 dependencies = [
@@ -49,13 +49,16 @@ dependencies = [
     dependency('clutter-gst-3.0'),
 ]
 
-webkit_dep = dependency('webkit2gtk-4.1', required : false)
+webkit_dep = dependency('webkit2gtk-4.1', required: false)
 if not webkit_dep.found()
-  webkit_dep = dependency('webkit2gtk-4.0')
+    webkit_dep = dependency('webkit2gtk-4.0')
 endif
 
-komorebi = fs.copyfile('komorebi.py', 'komorebi-desktop', install: true, install_dir: bindir)
-creator = fs.copyfile('komorebi-wallpaper-creator.py', 'komorebi-wallpaper-creator', install: true, install_dir: bindir)
+install_data(
+    ['komorebi.py', 'komorebi-wallpaper-creator.py'],
+    rename: ['komorebi', 'komorebi-wallpaper-creator'],
+    install_dir: bindir,
+)
 
 subdir('data')
 subdir('komorebi')
