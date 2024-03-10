@@ -1,5 +1,6 @@
 {
 	"python.linting.flake8Enabled": true,
 	"python.linting.enabled": true,
-	"C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
+	"C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
+	"C_Cpp.default.compileCommands": "/data/development/temp/komorebi/builddir/compile_commands.json"
 }
