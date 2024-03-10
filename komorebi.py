@@ -28,17 +28,15 @@ except ValueError:
         print("Neither WebKit2 version 4.0 nor 4.1 is available.")
         sys.exit(1)
 
-from gi.repository import Gio, Gtk, GtkClutter, Gdk, Gst, Clutter
-
-from komorebi.preferences_window import PreferencesWindow
-from komorebi.settings import ConfigKeys, Settings
-import komorebi.utilities
-
 from komorebi.screen import Screen
+import komorebi.utilities
+from komorebi.settings import ConfigKeys, Settings
+from komorebi.preferences_window import PreferencesWindow
+from gi.repository import Gio, Gtk, GtkClutter, Gdk, Gst, Clutter
 
 
 def check_desktop_wayland():
-    return not(os.environ.get('XDG_SESSION_TYPE') == 'wayland' or os.environ.get('WAYLAND_DISPLAY'))
+    return not (os.environ.get('XDG_SESSION_TYPE') == 'wayland' or os.environ.get('WAYLAND_DISPLAY'))
 
 
 def main_parser():

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 import argparse
 import gi
 import logging
@@ -12,9 +13,8 @@ gi.require_versions({
 })
 
 from gi.repository import Gtk, Gio
-
-import komorebi
 from komorebi.wallpaper_creator.window import WallpaperWindow
+import komorebi
 
 
 def main_parser():

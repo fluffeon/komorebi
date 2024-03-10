@@ -177,6 +177,7 @@ def get_icon_from(icon, icon_size):
 
     return iconPixbuf
 
+
 def apply_css(widgets, css):
     provider = Gtk.CssProvider()
     provider.load_from_data(str.encode(css))

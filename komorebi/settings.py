@@ -117,11 +117,15 @@ class Settings:
 
         # Sets base properties
         Settings._config_key_file.set_string(Settings.key_file_group, ConfigKeys.WALLPAPER_NAME.value, Settings.wallpaper_name)
-        Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.TIME_TWENTY_FOUR.value, Settings.time_twenty_four)
-        Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.SHOW_DESKTOP.value, Settings.show_desktop_icons)
-        Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.ENABLE_VIDEO.value, Settings.enable_video_wallpapers)
+        Settings._config_key_file.set_boolean(
+            Settings.key_file_group, ConfigKeys.TIME_TWENTY_FOUR.value, Settings.time_twenty_four)
+        Settings._config_key_file.set_boolean(
+            Settings.key_file_group, ConfigKeys.SHOW_DESKTOP.value, Settings.show_desktop_icons)
+        Settings._config_key_file.set_boolean(
+            Settings.key_file_group, ConfigKeys.ENABLE_VIDEO.value, Settings.enable_video_wallpapers)
         Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.MUTE_PLAYBACK.value, Settings.mute_playback)
-        Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.PAUSE_PLAYBACK.value, Settings.pause_playback)
+        Settings._config_key_file.set_boolean(
+            Settings.key_file_group, ConfigKeys.PAUSE_PLAYBACK.value, Settings.pause_playback)
         Settings._config_key_file.set_boolean(Settings.key_file_group, ConfigKeys.AUTOSTART.value, Settings.autostart)
 
         # Delete the file
