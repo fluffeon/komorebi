@@ -111,7 +111,7 @@ Users are encouraged to install Komorebi from their distro's package manager if 
 
 ## Using Komorebi
 
-Simply run `komorebi-desktop`, or open your application launcher and look for **Komorebi**.
+Simply run `komorebi`, or open your application launcher and look for **Komorebi**.
 
 Komorebi displays behind all other windows, so you may not notice anything if you have a fullscreen application running.
 
@@ -145,7 +145,19 @@ sudo ninja uninstall
 
 If you didn't compile Komorebi from source, you can uninstall it through your package manager in the same way you would uninstall any other package.
 
-## Questions? Issues?
+# Contributing
+
+We welcome contributions from everyone! Please submit a pull request or raise an issue if you'd like to help out.
+
+## Reporting bugs
+
+Please report bugs on the [issue tracker](https://github.com/Komorebi-Fork/komorebi/issues). Remember to seach for existing issues before creating a new one!
+
+## Translating
+
+We would love to have Komorebi translated into as many languages as possible! If you'd like to help, please raise an issue for guidance.
+
+# Questions? Issues?
 
 ### Komorebi is slow. What can I do about it?
 
