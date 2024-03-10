@@ -153,26 +153,29 @@ def get_icon_from(icon, icon_size):
     if icon is None or icon == '':
         return iconPixbuf
 
-    # Try those methods:
-    # 1- Icon is a file, somewhere in '/'.
-    # 2- Icon is an icon in a IconTheme.
-    # 3- Icon isn't in the current IconTheme.
-    # 4- Icon is not available, use default.
+    # Icon is a file, somewhere in '/'.
     if Gio.File.new_for_path(icon).query_exists():
         iconPixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(icon, icon_size, icon_size, False)
         return iconPixbuf
 
+    # Icon is in an IconTheme, try what we were asked for, then other icons until one is found
     iconTheme = Gtk.IconTheme.get_default()
     iconTheme.prepend_search_path('/usr/share/pixmaps')
 
-    try:
-        iconPixbuf = iconTheme.load_icon(icon, icon_size, Gtk.IconLookupFlags.FORCE_SIZE)
-    except GLib.Error:
-        if iconPixbuf is None:
-            iconPixbuf = iconTheme.load_icon('application-default-icon', icon_size, Gtk.IconLookupFlags.FORCE_SIZE)
+    for try_icon in (icon, 'emblem-file', 'application-default-icon', 'applications-symbolic', 'mime-type-application', 'question-symbolic'):
+        try:
+            iconPixbuf = iconTheme.load_icon(try_icon, icon_size, Gtk.IconLookupFlags.FORCE_SIZE)
+            break  # Success, stop trying fallbacks
+        except GLib.Error:
+            if try_icon == icon:
+                logging.debug(f'Failed to load icon: {icon}, trying fallbacks.')
+            pass
+
+    # If all else fails, log it and return an empty icon; at least we don't crash!
+    if iconPixbuf is None:
+        logging.debug(f'Failed to load icon: {icon} and all fallbacks.')
 
     return iconPixbuf
-
 
 def apply_css(widgets, css):
     provider = Gtk.CssProvider()
